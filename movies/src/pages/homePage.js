@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { getMovies } from "../api/tmdb-api";
 import { getLatestMovie } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from 'react-query';
@@ -7,6 +6,7 @@ import Spinner from '../components/spinner';
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
 import LatestTemplete from '../components/latestMovie';
 import { Pagination } from "@mui/material";
+import { getMovies } from "../api/movies-api";
 
 
 const HomePage = (props) => {
