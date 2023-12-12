@@ -2,13 +2,12 @@ import React, {useState} from "react";
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
 import PageTemplate from "../components/templateMovieListPage";
-import { getNowPlayingMovies } from "../api/tmdb-api";
+import { getNowPlayingMovies } from "../api/movies-api";
 import { Pagination } from "@mui/material";
 
 const InTheatresPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error, isLoading, isError, refetch } = useQuery(
-    ['Now Playing', {page: currentPage}],
+  const { data, error, isLoading, isError, refetch } = useQuery('Now Playing', 
     getNowPlayingMovies 
   );
 

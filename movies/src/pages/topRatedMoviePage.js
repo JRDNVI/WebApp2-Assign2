@@ -2,13 +2,12 @@ import React, {useState} from "react";
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
 import PageTemplate from "../components/templateMovieListPage";
-import { getTopRatedMovies } from "../api/tmdb-api";
+import { getTopRatedMovies } from "../api/movies-api";
 import { Pagination } from "@mui/material";
 
 const ActorDetailsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error, isLoading, isError, refetch } = useQuery(
-    ['Top Rated', {page: currentPage}],
+  const { data, error, isLoading, isError, refetch } = useQuery('Top Rated',
     getTopRatedMovies 
   );
 

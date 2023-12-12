@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useQuery } from "react-query";
-import { getPopularActors } from "../api/tmdb-api";
+import { getPopularActors } from "../api/movies-api";
 import Spinner from '../components/spinner';
 import PopularActor from "../components/popularActor";
 import { Pagination } from "@mui/material";
@@ -10,9 +10,8 @@ const PopularActorPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState("");
 
-    const {data, isLoading, error, isError, refetch} = useQuery(
-        ["Popular Actor", {page: currentPage}],
-        getPopularActors)
+    const {data, isLoading, error, isError, refetch} = useQuery("Popular Actor",
+     getPopularActors)
 
     if (isLoading) {
         return <Spinner />

@@ -15,10 +15,12 @@ import ActorDetailsPage from "./pages/actorDetailsPage";
 import TopRatedPage from "./pages/topRatedMoviePage"
 import InTheatresPage from "./pages/InTheatresPage";
 import AuthOptionsPage from "./pages/authOptionPage";
-import UserProvider from "./components/auth/UserProvider";
 import MustWatchMoviesPage from "./pages/mustWatchMoviesPage";
 import PopularActorPage from "./pages/popularActorPage";
-
+import AuthContextProvider from "./contexts/authContext";
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
+import ProtectedRoutes from "./protectedRoutes";
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 
@@ -51,10 +53,14 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-      <UserProvider>
+      <AuthContextProvider>
         <SiteHeader />
         <MoviesContextProvider>
         <Routes>
+          <Route path="/loginPage" element={<LoginPage/>} />
+          <Route path="/signup" element={<SignupPage/>} />
+          <Route element={<ProtectedRoutes />} >
+          <Route path="/authPage/" element={<AuthOptionsPage/>} />
           <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
           <Route path="/movies/mustWatch" element={<MustWatchMoviesPage />} />
           <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
@@ -65,12 +71,12 @@ const App = () => {
           <Route path="/actor/:name" element={<ActorDetailsPage />} />
           <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
           <Route path="/movies/:id" element={<MoviePage />} />
-          <Route path="/authPage/" element={<AuthOptionsPage/>} />
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={ <Navigate to="/" /> } />
+          </Route>
         </Routes>
         </MoviesContextProvider>
-        </UserProvider>
+        </AuthContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

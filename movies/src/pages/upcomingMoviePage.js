@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PageTemplate from '../components/templateMovieListPage'
-import { getUpcomingMovies } from "../api/tmdb-api";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 import { useQuery } from "react-query";
 import Spinner from '../components/spinner';
 import { Pagination } from "@mui/material";
+import { getUpcomingMovies } from "../api/movies-api";
 
 const UpcomingMoviePage = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error, isLoading, isError, refetch } = useQuery(
-    ['upcoming', {page: currentPage}], 
-    getUpcomingMovies
+  const { data, error, isLoading, isError, refetch } = useQuery('upcoming',
+  getUpcomingMovies
   );
 
   if (isLoading) {

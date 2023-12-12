@@ -11,27 +11,19 @@ import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import UserContext from "../../contexts/userContext";
 import { getAuth, signOut } from 'firebase/auth';
+import { AuthContext } from "../../contexts/authContext";
+
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 
 const SiteHeader = () => {
-  const auth = getAuth();
-  const { currentUser } = useContext(UserContext);
-  console.log("Hello", JSON.stringify(currentUser));
-  
+
+  const context = useContext(AuthContext);
+  console.log(context);
   const handleSignIn = () => {
     navigate("/authPage/")
-  };
-  
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
   };
   
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,6 +44,11 @@ const SiteHeader = () => {
     { label: "People", path: "/actors"}
   ];
 
+  const signoutOptions = [
+    { label: "Sign In", path: "/loginPage" },
+    { label: "Sign Up", path: "/signup" }
+  ]
+
   const handleMenuSelect = (pageURL) => {
     navigate(pageURL, { replace: true });
   };
@@ -60,22 +57,79 @@ const SiteHeader = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  if(!currentUser) return null;
-
+  if (context.isAuthenticated === false) return (
+    <>
+    
+      <AppBar position="fixed" color="secondary">
+        <Toolbar>
+        <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          {context.userName}
+        </Typography>  
+          <Typography variant="h4" sx={{ flexGrow: 1 }}>
+            TMDB Client
+          </Typography>
+            {isMobile ? (
+              <>
+                <IconButton
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={open}
+                  onClose={() => setAnchorEl(null)}
+                >
+                  {signoutOptions.map((opt) => (
+                    <MenuItem
+                      key={opt.label}
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <>
+                {signoutOptions.map((opt) => (
+                  <Button
+                    key={opt.label}
+                    color="inherit"
+                    onClick={() => handleMenuSelect(opt.path)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))} 
+              </>
+            )}
+        </Toolbar>
+      </AppBar>
+      <Offset />
+    </>
+  );
   return (
     <>
     
       <AppBar position="fixed" color="secondary">
         <Toolbar>
-          { currentUser ? (
-            <>
-              <Typography variant="body1" sx={{ flexGrow: 1 }}>
-                  {currentUser.email}
-              </Typography>
-            </>
-          ) : (
-            null
-          )}
+        <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          {context.userName}
+        </Typography>  
           <Typography variant="h4" sx={{ flexGrow: 1 }}>
             TMDB Client
           </Typography>
@@ -128,12 +182,6 @@ const SiteHeader = () => {
                 ))} 
               </>
             )}
-            { currentUser ? (
-              <Button color="inherit" onClick={handleSignOut}>
-                Sign Out
-              </Button>
-            ) : null 
-          }
         </Toolbar>
       </AppBar>
       <Offset />
