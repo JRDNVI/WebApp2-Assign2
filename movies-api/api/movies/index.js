@@ -9,7 +9,8 @@ import {
     getLatestMovie,
     getPopularActors,
     getMovie,
-    getCastForMovie
+    getCastForMovie,
+    getMovieImages
   } from '../tmdb-api';
 
 const router = express.Router();
@@ -94,6 +95,16 @@ router.get('/tmdb/latest', asyncHandler(async (req, res) => {
 router.get('/tmdb/popular_actors', asyncHandler(async (req, res) => {
     const popularActors = await getPopularActors();
     res.status(200).json(popularActors);
+}));
+
+router.get('/tmdb/images/:id', asyncHandler(async (req, res) => {
+    const id = parseInt(req.params.id);
+    const images = await getMovieImages( id );
+    if (images) {
+        res.status(200).json(images);
+    } else {
+        res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
+    }
 }));
 
 export default router;

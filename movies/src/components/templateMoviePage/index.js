@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import MovieCredits from "../movieCredits";
-import { getMovieImages } from "../../api/tmdb-api";
+import { getMovieImages } from "../../api/movies-api";
 import { getMovieCredits } from "../../api/movies-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner'
