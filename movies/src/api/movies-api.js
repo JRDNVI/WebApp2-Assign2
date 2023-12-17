@@ -88,6 +88,21 @@ export const getMovies = async () => {
     return response.json();
   };
 
+  export const getMovieCredits = async (args) => {
+    const [, idPart] = args.queryKey;
+    const { id } = idPart;
+    const response = await fetch(
+      `http://localhost:8080/api/movies/tmdb/cast/${id}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
+    )
+    return response.json();
+  };
+
+  
+
    export const login = async (username, password) => {
       const response = await fetch('http://localhost:8080/api/users', {
           headers: {

@@ -8,7 +8,8 @@ import {
     getNowPlayingMovies,
     getLatestMovie,
     getPopularActors,
-    getMovie
+    getMovie,
+    getCastForMovie
   } from '../tmdb-api';
 
 const router = express.Router();
@@ -50,6 +51,16 @@ router.get('/tmdb/movie/:id', asyncHandler(async (req, res) => {
     const movie = await getMovie( id );
     if (movie) {
         res.status(200).json(movie);
+    } else {
+        res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
+    }
+}));
+
+router.get('/tmdb/cast/:id', asyncHandler(async (req, res) => {
+    const id = parseInt(req.params.id);
+    const cast = await getCastForMovie( id );
+    if (cast) {
+        res.status(200).json(cast);
     } else {
         res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
     }
