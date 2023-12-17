@@ -28,7 +28,7 @@ const SiteHeader = () => {
   
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
+  var setOptionMenu = [];
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
@@ -57,74 +57,9 @@ const SiteHeader = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  if (context.isAuthenticated === false) return (
-    <>
-    
-      <AppBar position="fixed" color="secondary">
-        <Toolbar>
-        <Typography variant="h4" sx={{ flexGrow: 1 }}>
-          {context.userName}
-        </Typography>  
-          <Typography variant="h4" sx={{ flexGrow: 1 }}>
-            TMDB Client
-          </Typography>
-            {isMobile ? (
-              <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {signoutOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
-                    >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : (
-              <>
-                {signoutOptions.map((opt) => (
-                  <Button
-                    key={opt.label}
-                    color="inherit"
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
-                    {opt.label}
-                  </Button>
-                ))} 
-              </>
-            )}
-        </Toolbar>
-      </AppBar>
-      <Offset />
-    </>
-  );
+  if (context.isAuthenticated ? setOptionMenu = menuOptions : setOptionMenu = signoutOptions)
   return (
     <>
-    
       <AppBar position="fixed" color="secondary">
         <Toolbar>
         <Typography variant="h4" sx={{ flexGrow: 1 }}>
@@ -159,7 +94,7 @@ const SiteHeader = () => {
                   open={open}
                   onClose={() => setAnchorEl(null)}
                 >
-                  {menuOptions.map((opt) => (
+                  {setOptionMenu.map((opt) => (
                     <MenuItem
                       key={opt.label}
                       onClick={() => handleMenuSelect(opt.path)}
@@ -171,7 +106,7 @@ const SiteHeader = () => {
               </>
             ) : (
               <>
-                {menuOptions.map((opt) => (
+                {setOptionMenu.map((opt) => (
                   <Button
                     key={opt.label}
                     color="inherit"
