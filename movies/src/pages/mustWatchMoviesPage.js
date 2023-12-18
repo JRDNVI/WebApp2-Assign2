@@ -5,12 +5,13 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from '../components/spinner'
 import RemoveFromMustWatchIcon from "../components/cardIcons/removeFromMustWatch";
+import { AuthContext } from "../contexts/authContext";
 
 const MustWatchMoviesPage = () => {
-  const {mustWatch: movieIds } = useContext(MoviesContext);
+  const context = useContext(AuthContext);
 
   const mustWatchMovieQueries = useQueries(
-    movieIds.map((movieId) => {
+    context.mustWatch.map((movieId) => {
       return {
         queryKey: ["movie", { id: movieId }],
         queryFn: getMovie,

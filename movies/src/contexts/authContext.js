@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-import { login, signup, getUserData } from "../api/movies-api";
+import { login, signup, getUserData, addMovieIDtoList, removeMovieIDFromList } from "../api/movies-api";
 
 export const AuthContext = createContext(null);
 
@@ -39,6 +39,34 @@ const AuthContextProvider = (props) => {
     setTimeout(() => setIsAuthenticated(false), 100);
   }
 
+  const addToFavorites = async (user, movieID) => {
+    const result = await addMovieIDtoList(user, movieID, "favouriteIDs" );
+    console.log(result.code);
+    setFavouriteIDs(prevIDs => [...prevIDs, movieID])
+    return (result.code == 201)?  true : false;
+  }
+
+  const addToMustWatch = async (user, movieID) => {
+    const result = await addMovieIDtoList(user, movieID, "mustWatchIDs" );
+    console.log(result.code);
+    setMustWatch(prevIDs => [...prevIDs, movieID])
+    return (result.code == 201)?  true : false;
+  }
+
+  const removeFromFavorites = async (movieID) => {
+    const result = await removeMovieIDFromList(userName, movieID, "favouriteIDs" );
+    console.log(result.code);
+    setFavouriteIDs(prevIDs => prevIDs.filter(id => id!== movieID))
+    return (result.code == 201)?  true : false;
+  }
+
+  const removeFromMustWatch = async (movieID) => {
+    const result = await removeMovieIDFromList(userName, movieID, "mustWatchIDs" );
+    console.log(result.code);
+    setMustWatch(prevIDs => prevIDs.filter(id => id!== movieID))
+    return (result.code == 201)?  true : false;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -46,6 +74,10 @@ const AuthContextProvider = (props) => {
         authenticate,
         register,
         signout,
+        addToFavorites,
+        addToMustWatch,
+        removeFromFavorites,
+        removeFromMustWatch,
         userName,
         favouriteIDs,
         mustWatch

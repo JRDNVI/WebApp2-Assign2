@@ -1,6 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from '../contexts/authContext';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const SignUpPage = props => {
   const context = useContext(AuthContext)
@@ -27,22 +31,49 @@ const SignUpPage = props => {
 
   //
   return (
-    <>
-      <h2>SignUp page</h2>
-      <p>You must register a username and password to log in </p>
-      <input value={userName} placeholder="user name" onChange={e => {
-        setUserName(e.target.value);
-      }}></input><br />
-      <input value={password} type="password" placeholder="password" onChange={e => {
-        setPassword(e.target.value);
-      }}></input><br />
-      <input value={passwordAgain} type="password" placeholder="password again" onChange={e => {
-        setPasswordAgain(e.target.value);
-      }}></input><br />
-      {/* Login web form  */}
-      <button onClick={register}>Register</button>
-    </>
-  );
+    <Container maxWidth="sm">
+        <Typography variant="h4" component="h1" gutterBottom>
+            Sign Up
+        </Typography>
+        <form>
+            <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={userName}
+                onChange={e => setUserName(e.target.value)}
+            />
+            <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+            />
+            <TextField
+                label="Repeat Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={passwordAgain}
+                onChange={e => setPasswordAgain(e.target.value)}
+            />
+            <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={register}
+                fullWidth
+                style={{ marginTop: '20px' }}
+            >
+                Register
+            </Button>
+        </form>
+    </Container>
+);
 };
 
 export default SignUpPage;

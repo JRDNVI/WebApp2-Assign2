@@ -2,6 +2,10 @@ import React, { useContext, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from '../contexts/authContext';
 import { Link } from "react-router-dom";
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const LoginPage = props => {
     const context = useContext(AuthContext);
@@ -23,20 +27,42 @@ const LoginPage = props => {
     }
 
     return (
-        <>
-            <h2>Login page</h2>
-            <p>You must log in to view the protected pages </p>
-            <input id="username" placeholder="user name" onChange={e => {
-                setUserName(e.target.value);
-            }}></input><br />
-            <input id="password" type="password" placeholder="password" onChange={e => {
-                setPassword(e.target.value);
-            }}></input><br />
-            {/* Login web form  */}
-            <button onClick={login}>Log in</button>
-            <p>Not Registered?
-                <Link to="/signup">Sign Up!</Link></p>
-        </>
+        <Container maxWidth="sm">
+            <Typography variant="h4" component="h1" gutterBottom>
+                Login
+            </Typography>
+            <form>
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={userName}
+                    onChange={e => setUserName(e.target.value)}
+                />
+                <TextField
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={login}
+                    fullWidth
+                    style={{ marginTop: '20px' }}
+                >
+                    Log in
+                </Button>
+                <Typography variant="body1" style={{ marginTop: '20px' }}>
+                    Not Registered? <Link to="/signup">Sign Up!</Link>
+                </Typography>
+            </form>
+        </Container>
     );
 };
 
