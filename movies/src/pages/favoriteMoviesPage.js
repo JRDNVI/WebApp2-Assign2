@@ -6,12 +6,14 @@ import { getMovie } from "../api/tmdb-api";
 import Spinner from '../components/spinner'
 import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { AuthContext } from "../contexts/authContext";
 
 const FavoriteMoviesPage = () => {
+  const context = useContext(AuthContext);
   const {favorites: movieIds } = useContext(MoviesContext);
 
   const favoriteMovieQueries = useQueries(
-    movieIds.map((movieId) => {
+    context.favouriteIDs.map((movieId) => {
       return {
         queryKey: ["movie", { id: movieId }],
         queryFn: getMovie,

@@ -111,10 +111,49 @@ export const getMovies = async () => {
       }
     }
     )
+    
     return response.json();
   };
 
+  export const getActorDetails = async (args) => {
+    const [, idPart] = args.queryKey;
+    const { id } = idPart;
+    console.log(id);
+    const response = await fetch(
+      `http://localhost:8080/api/movies/tmdb/actor/${id}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
+    )
+    return response.json();
+  };
 
+  export const getFullActorProfile = async (args) => {
+    const [, idPart] = args.queryKey;
+    const { id } = idPart;
+    const response = await fetch(
+      `http://localhost:8080/api/movies/tmdb/actor/${id}/profile`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
+    )
+    return response.json();
+  };
+
+  export const getMovieReviews = async (args) => {
+    const [, idPart] = args.queryKey;
+    const { id } = idPart;
+    const response = await fetch(
+      `http://localhost:8080/api/movies/tmdb/reviews/${id}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
+    )
+    return response.json();
+  };
   
 
    export const login = async (username, password) => {
@@ -137,4 +176,39 @@ export const getMovies = async () => {
           body: JSON.stringify({ username: username, password: password })
       });
       return response.json();
+  };
+
+  export const getUserData = async (username) => {
+    const response = await fetch(
+      `http://localhost:8080/api/userData/${username}`, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    });
+    return response.json();
+  };
+
+  export const addMovieIDtoList = async (username, movieID, arrayName) => {
+    console.log(username, movieID, arrayName);
+    const response = await fetch(
+      `http://localhost:8080/api/userData/${username}/addId`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'put',
+      body: JSON.stringify({ arrayName: arrayName, id: movieID  })
+    });
+    return response.json();
+  };
+
+  export const removeMovieIDFromList = async (username, movieID, arrayName) => {
+    const response = await fetch(
+      `http://localhost:8080/api/userData/${username}/removeId`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'put',
+      body: JSON.stringify({ arrayName: arrayName, id: movieID  })
+    });
+    return response.json();
   };

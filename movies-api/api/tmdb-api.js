@@ -98,7 +98,54 @@ export const getMovieImages = async (id) => {
 };
 
 
+export const getActorDetails = async (id) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/search/person?query=${id}&api_key=${process.env.TMDB_KEY}`
+        );
 
+        if (!response.ok) {
+            throw new Error(response.json().message);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+    
+};
+
+export const getFullActorProfile = async (id) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_KEY}&append_to_response=movie_credits`
+        );
+
+        if (!response.ok) {
+            throw new Error(response.json().message);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getMovieReviews = async (id) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.TMDB_KEY}`
+        );
+
+        if (!response.ok) {
+            throw new Error(response.json().message);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
 
 
 export const getNowPlayingMovies = async () => {
@@ -148,5 +195,3 @@ export const getPopularActors = async () => {
         throw error;
     }
 };
-
-

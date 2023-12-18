@@ -5,7 +5,7 @@ import Spinner from '../components/spinner';
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
 import LatestTemplete from '../components/latestMovie';
 import { Pagination } from "@mui/material";
-import { getMovies, getLatestMovie } from "../api/movies-api";
+import { getMovies, getLatestMovie, addMovieIDtoList, getUserData } from "../api/movies-api";
 
 
 const HomePage = (props) => {
@@ -27,6 +27,7 @@ const HomePage = (props) => {
   }  
 
   const movies = data.results;
+
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

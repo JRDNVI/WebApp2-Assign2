@@ -10,9 +10,9 @@ import SiteHeader from './components/siteHeader'
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
-import AddMovieReviewPage from './pages/addMovieReviewPage'
+import AddMovieReviewPage from './pages/addMovieReviewPage';
 import ActorDetailsPage from "./pages/actorDetailsPage";
-import TopRatedPage from "./pages/topRatedMoviePage"
+import TopRatedPage from "./pages/topRatedMoviePage";
 import InTheatresPage from "./pages/InTheatresPage";
 import AuthOptionsPage from "./pages/authOptionPage";
 import MustWatchMoviesPage from "./pages/mustWatchMoviesPage";
