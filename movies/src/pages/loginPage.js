@@ -6,24 +6,30 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 
-const LoginPage = props => {
-    const context = useContext(AuthContext);
-
+const LoginPage = () => {
+    const authContext = useContext(AuthContext);
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    const login = () => {
-        context.authenticate(userName, password);
+    const handleLogin = async () => {
+        try {
+            await authContext.authenticate(userName, password);
+            if (!authContext.isAuthenticated ) {
+                setError("Incorrect username or password. Please try again.");
+            } 
+        } catch (err) {
+            console.log(error);
+        }
     };
 
     let location = useLocation();
+    const { from } = location.state || { from: { pathname: "/" } };
 
-    // Set 'from' to path where browser is redirected after a successful login - either / or the protected path user requested
-    const { from } = location.state ? { from: location.state.from.pathname } : { from: "/" };
-
-    if (context.isAuthenticated === true) {
-        return <Navigate to={from} />;
+    if (authContext.isAuthenticated) {
+        return <Navigate to={from.pathname} />;
     }
 
     return (
@@ -31,7 +37,12 @@ const LoginPage = props => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Login
             </Typography>
-            <form>
+            {error && (
+                <Alert severity="error" style={{ marginBottom: '20px' }}>
+                    {error}
+                </Alert>
+            )}
+            <form noValidate>
                 <TextField
                     label="Username"
                     variant="outlined"
@@ -52,7 +63,7 @@ const LoginPage = props => {
                 <Button 
                     variant="contained" 
                     color="primary" 
-                    onClick={login}
+                    onClick={handleLogin}
                     fullWidth
                     style={{ marginTop: '20px' }}
                 >
