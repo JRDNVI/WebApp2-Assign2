@@ -58,6 +58,7 @@ const SiteHeader = () => {
   };
 
   if (context.isAuthenticated ? setOptionMenu = menuOptions : setOptionMenu = signoutOptions)
+  
   return (
     <>
       <AppBar position="fixed" color="secondary">
