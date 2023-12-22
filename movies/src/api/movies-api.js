@@ -142,9 +142,8 @@ export const getMovies = async () => {
     return response.json();
   };
 
-  export const getMovieReviews = async (args) => {
-    const [, idPart] = args.queryKey;
-    const { id } = idPart;
+  export const getMovieReviews = async (id) => {
+    
     const response = await fetch(
       `http://localhost:8080/api/movies/tmdb/reviews/${id}`, {
       headers: {

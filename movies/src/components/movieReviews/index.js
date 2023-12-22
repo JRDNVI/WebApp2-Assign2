@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Spinner from "../spinner";
 import { Link } from "react-router-dom";
-import { getMovieReviews } from "../../api/tmdb-api";
+import { getMovieReviews } from "../../api/movies-api";
 import { excerpt } from "../../util";
 import { useQuery } from "react-query";
 
@@ -17,19 +17,14 @@ export default function MovieReviews({ movie }) {
   console.log(movie)
   const [reviews, setReviews] = useState([]);
 
-  const [ data, isLoading, isError, error] = useQuery(
-  ["reviews", {id: movie.id }],
-  getMovieReviews
-  );
+  useEffect(() => {
+    getMovieReviews(movie.id).then((reviews => {
+      setReviews(reviews.results);
+    })
+    )
+  }, []);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
 
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
- 
   return (
     <TableContainer component={Paper}>
       <Table sx={{minWidth: 550}} aria-label="reviews table">
@@ -41,7 +36,7 @@ export default function MovieReviews({ movie }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((r) => (
+          {reviews.map((r) => (
             <TableRow key={r.id}>
               <TableCell component="th" scope="row">
                 {r.author}

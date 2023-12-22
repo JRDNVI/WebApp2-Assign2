@@ -57,7 +57,7 @@ const AuthContextProvider = (props) => {
     const result = await removeMovieIDFromList(userName, movieID, "favouriteIDs" );
     console.log(result.code);
     setFavouriteIDs(prevIDs => prevIDs.filter(id => id!== movieID))
-    return (result.code == 201)?  true : false;
+    return (result.code == 201) ?  true : false;
   }
 
   const removeFromMustWatch = async (movieID) => {

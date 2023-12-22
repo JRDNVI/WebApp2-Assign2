@@ -18,11 +18,6 @@ router.put('/:username/addId', asyncHandler(async (req, res) => {
     const username = req.params.username;
     const { arrayName, id } = req.body;
 
-    // I mightn't need this
-    // if (!['favouriteIDs', 'mustWatchIDs'].includes(arrayName)) {
-    //     return res.status(400).json({ message: 'Invalid array name.', status_code: 400 });
-    // }
-
     try {
         const update = { $addToSet: { [arrayName]: id } };
         const userData = await userDataModel.findOneAndUpdate({ username: username }, update, { new: true });

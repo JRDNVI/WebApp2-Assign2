@@ -2,40 +2,30 @@
 
 Name: Jordon Coady
 
-## Features.
-
-A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** (or modifications to existing features)
- 
- + Feature 1 
- + Feature 2 
- + Feature 3 
- + etc
-
 ## Setup requirements.
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
++ Movies folder (APP)
+ - npm install
+ - create .env in the project
+    REACT_APP_TMDB_KEY=your_key
+    FAST_REFRESH=false
+  
 
-## API Configuration
-
-Describe any configuration that needs to take place before running the API. For example, creating an `.env` file and what variables to put in it. Give an example of how this might be done.
-
-REMEMBER: DON'T PUT YOUR OWN USERNAMES/PASSWORDS/AUTH KEYS IN THE README OR ON GITHUB, just placeholders as indicated below:
-
-______________________
-NODEENV=development
-PORT=8080
-HOST=
-mongoDB=YourMongoURL
-seedDb=true
-secret=YourJWTSecret
-______________________
++ Movies-api folder (API)
+  - npm install --save-dev  @babel/core @babel/preset-env @babel/node nodemon @babel/eslint-parser
+  - .env file
+    NODEENV=development
+    PORT=8080
+    HOST=localhost
+    mongoDB=YourMongoURL
+    TMDB_KEY=your_key
+    secret=YourJWTSecret
 
 ## API Design
-Give an overview of your web API design, perhaps similar to the following: 
 
 - Movies/index.js
   - Static Endpoints
-    - /tmdb/upcoming | GET | Gets a list of  upcoming movies
+    - /tmdb/upcoming | GET | Gets a list of upcoming movies
     - /tmdb/genres | GET | Gets a list of genres
     - /tmdb/top_rated | GET | Gets a list of Top Rated Movies
     - /tmdb/now_playing | GET | Gets movies that are in theatres
@@ -48,6 +38,7 @@ Give an overview of your web API design, perhaps similar to the following:
     - /tmdb/images/:id | GET | Gets movie posters for a given movie
     - /tmdb/actor/:id | GET | Searchs a person by there name 
     - /tmdb/actor/:id/profile | GET | returns a full profile base of thier id
+    - /tmdb/reviews/:id | GET | Get reviews for a given movie
 
 - userData/index.js
   - Static Endpoints
@@ -57,18 +48,44 @@ Give an overview of your web API design, perhaps similar to the following:
     - /:username/addId | PUT | Adds an id to either the mustWatch or favourite array for a user
     - /:username/removeId | PUT | Removes an id from either the mustWatch or favourite array
 
-If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
 
 ## Security and Authentication
 
-Give details of authentication/security implemented on the API (e.g. passport/sessions). Indicate which routes are protected.
++ Security
+  - bcrypt is used to encrypt users password using 10 rounds of salting before they are saved or updated to the database.
 
-Every Route is protected except the login and sign up page
++ Authentication
+   - bcrypt is used to compare a password entered by a user against the hashed password stored in the database.
+   - The authenticateUser() function in api/users/index.js, creates the JWT token using a SECRET pre-defined in the 
+     .env file and signed with the username. The token is then returned to the client for use in future requests. 
+
+ + Protected Routes
+  - /authPage/
+  - /movies/favorites
+  - /movies/mustWatch
+  - /movies/upcoming
+  - /movies/topRated
+  - /movies/playingNow
+  - /actors
+  - /reviews/form
+  - /actor/:name
+  - /reviews/:id
+  - /movies/:id
+  - /
+  - *
 
 ## Integrating with React App
 
-Describe how you integrated your React app with the API. List the views that use your Web API instead of the TMDB API. Describe any other updates to the React app from Assignment One.
+When integrating the API to my react app I started by converting the static endpoints first. I created a fetch request to tmdb 
+in movies-api/api/tmdb-api.js. Then I created a new endpoint for that request in movies/index.js. I tested it with postman to ensure 
+the backend was working before moving onto the frontend. In the frontend I created a fetch request to my API e.g., "http://localhost:8080/api/movies/tmdb/latest"
+in movies/src/api/movies-api.js. The last step was changing which file in /movies/src/api/ was used to fetch requests, I changed it to point to my API.
+This process was carried out for the remaining static endpoints. 
 
-## Independent learning (if relevant)
+I moved onto the paramised endpoints next. I had to pass variables back in the request so the backend could make the fetch to TMDB 
+e.g., `http://localhost:8080/api/movies/tmdb/movie/${id}` Then in movies-api/api/movies/index.js I parsed the id from the url. 
 
-Briefly explain any non-standard features developed for the app. 
+`const id = parseInt(req.params.id);`
+`const movie = await getMovie( id );`
+
+Then I passed the id to movies-api/api/tmdb-api.js. I continued with this process for the remaining paramised endpoints.

@@ -131,6 +131,7 @@ export const getFullActorProfile = async (id) => {
     }
 };
 
+
 export const getMovieReviews = async (id) => {
     try {
         const response = await fetch(
